@@ -16,7 +16,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.topic2.android.notes.routing.NotesRouter
+import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.theme.NotesTheme
+import com.topic2.android.notes.theme.NotesThemeSettings
 
 
 @Composable
@@ -130,6 +133,12 @@ private fun LightDarkThemeItem() {
                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                 .align(alignment = Alignment.CenterVertically)
         )
+        Switch(checked = NotesThemeSettings.isDarkThemeEnabled,
+            onCheckedChange ={ NotesThemeSettings.isDarkThemeEnabled = it },
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp)
+                .align(alignment = Alignment.CenterVertically)
+        )
     }
 }
 
@@ -142,3 +151,41 @@ fun LightDarkThemeItemPreview()
     }
 }
 
+@Composable
+fun AppDrawer(
+    currentScreen: Screen,
+    closeDrawerAction: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        AppDrawerHeader()
+
+        Divider(color = MaterialTheme.colors.onSurface.copy(alpha = .2f))
+
+        ScreenNavigationButton(
+            icon = Icons.Filled.Home,
+            label = "Заметки",
+            isSelected = currentScreen == Screen.Notes,
+            onClick = {
+                NotesRouter.navigateTo(Screen.Notes)
+                closeDrawerAction()
+            }
+        )
+        ScreenNavigationButton(
+            icon = Icons.Filled.Delete,
+            label = "Корзина",
+            isSelected = currentScreen == Screen.Trash,
+            onClick = {
+                NotesRouter.navigateTo(Screen.Trash)
+                closeDrawerAction()
+            }
+        )
+        LightDarkThemeItem()
+    }
+}
+@Preview
+@Composable
+fun AppDrawerPreview(){
+    NotesTheme {
+        AppDrawer(Screen.Notes, {})
+    }
+}
