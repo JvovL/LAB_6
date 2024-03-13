@@ -25,10 +25,11 @@ import androidx.compose.ui.graphics.Shape
         .background(Color.White, backgroundShape)
     ){
     NoteColor(
-        modifier = Modifier.align(Alignment.CenterVertically),
+        modifier = Modifier
+            .align(Alignment.CenterVertically)
+            .padding(start = 16.dp, end = 16.dp),
         color = rwGreen,
         size = 40.dp,
-        padding = 4.dp,
         border = 1.dp
     )
         Column(modifier = Modifier
