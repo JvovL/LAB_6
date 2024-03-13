@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -29,14 +30,19 @@ import androidx.compose.ui.graphics.Shape
         padding = 4.dp,
         border = 1.dp
     )
-        Column(modifier = Modifier.weight(1f)) {
+        Column(modifier = Modifier
+            .weight(1f)
+            .align(Alignment.CenterVertically)
+        ) {
             Text(text = "Заголовок", maxLines = 1)
             Text(text = "Содержимое", maxLines = 1)
         }
     Checkbox(
         checked = false,
         onCheckedChange = {},
-        modifier = Modifier.padding(start = 8.dp)
+        modifier = Modifier
+            .padding(start = 8.dp)
+            .align(Alignment.CenterVertically)
     )
 }
 }
