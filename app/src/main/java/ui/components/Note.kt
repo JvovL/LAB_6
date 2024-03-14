@@ -18,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.topic2.android.notes.domain.model.NoteModel
+import com.topic2.android.notes.util.fromHex
 
 @Composable fun Note(
     note: NoteModel,
@@ -36,7 +37,7 @@ import com.topic2.android.notes.domain.model.NoteModel
         modifier = Modifier
             .align(Alignment.CenterVertically)
             .padding(start = 16.dp, end = 16.dp),
-        color = rwGreen,
+        color = Color.fromHex(note.color.hex),
         size = 40.dp,
         border = 1.dp
     )
@@ -44,7 +45,7 @@ import com.topic2.android.notes.domain.model.NoteModel
             .weight(1f)
             .align(Alignment.CenterVertically)
         ) {
-            Text(text = "Заголовок",
+            Text(text = note.title,
                 color = Color.Black,
                 maxLines = 1,
                 style = TextStyle(
@@ -54,7 +55,7 @@ import com.topic2.android.notes.domain.model.NoteModel
                 )
             )
             Text(
-                text = "Содержимое",
+                text = note.content,
                 color = Color.Black.copy(alpha = 0.75f),
                 maxLines = 1,
                 style = TextStyle(
@@ -64,14 +65,17 @@ import com.topic2.android.notes.domain.model.NoteModel
                 )
             )
         }
-    Checkbox(
-        checked = false,
-        onCheckedChange = {},
-        modifier = Modifier
-            .padding(start = 8.dp)
-            .align(Alignment.CenterVertically)
-    )
-}
+        if(note.isCheckedOff != null) {
+            Checkbox(
+                checked = false,
+                onCheckedChange = {},
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterVertically)
+            )
+        }
+
+    }
 }
 
 @Preview
