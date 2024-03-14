@@ -17,8 +17,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.topic2.android.notes.domain.model.NoteModel
 
-@Composable fun Note(){
+@Composable fun Note(
+    note: NoteModel,
+    onNoteClick: (NoteModel) -> Unit = {},
+    onNotesCheckedChange:(NoteModel) -> Unit = {}
+){
     val backgroundShape: Shape = RoundedCornerShape(4.dp)
     Row(modifier = Modifier
         .padding(8.dp)
