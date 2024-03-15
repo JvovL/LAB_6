@@ -47,6 +47,7 @@ android {
     kotlinCompilerVersion kotlin_version
     kotlinCompilerExtensionVersion compose_version
   }
+    namespace 'com.topic2.android.notes'
 }
 
 dependencies {

@@ -24,7 +24,7 @@ import com.topic2.android.notes.util.fromHex
 @Composable fun Note(
     note: NoteModel,
     onNoteClick: (NoteModel) -> Unit = {},
-    onNotesCheckedChange:(NoteModel) -> Unit = {}
+    onNoteCheckedChange:(NoteModel) -> Unit = {}
 ){
     val backgroundShape: Shape = RoundedCornerShape(4.dp)
     Row(modifier = Modifier
@@ -72,7 +72,7 @@ import com.topic2.android.notes.util.fromHex
                 checked = note.isCheckedOff,
                 onCheckedChange = {isChecked ->
                                   val newNote = note.copy(isCheckedOff = isChecked)
-                    onNotesCheckedChange(newNote)
+                    onNoteCheckedChange(newNote)
                 },
                 modifier = Modifier
                     .padding(start = 8.dp)
