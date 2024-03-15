@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
 import com.topic2.android.notes.domain.model.NoteModel
-import com.topic2.android.notes.*
 import com.topic2.android.notes.viewmodel.MainViewModel
 import androidx.compose.runtime.getValue
 import ui.components.Note
