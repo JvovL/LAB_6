@@ -17,10 +17,22 @@ import com.topic2.android.notes.util.fromHex
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.text.font.FontWeight
+import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.viewmodel.MainViewModel
 
 @Composable
 fun SaveNoteScreen(viewModel: MainViewModel){
+
+}
+
+@Composable
+private fun SaveNoteTopAppBar(
+    isEditingMode: Boolean,
+    onBackClick: () -> Unit,
+    onSaveNoteClick: () -> Unit,
+    onOpenColorPickerClick: () -> Unit,
+    onDeleteNoteClick: () -> Unit
+) {
 
 }
 
