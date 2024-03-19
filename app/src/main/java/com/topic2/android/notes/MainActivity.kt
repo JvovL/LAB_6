@@ -6,12 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.screens.NotesScreen
@@ -19,9 +15,6 @@ import com.topic2.android.notes.theme.NotesTheme
 import com.topic2.android.notes.ui.screens.TrashScreen
 import com.topic2.android.notes.viewmodel.MainViewModel
 import com.topic2.android.notes.viewmodel.MainViewModelFactory
-import kotlinx.coroutines.launch
-import ui.components.AppDrawer
-import ui.components.Note
 import ui.components.SaveNoteScreen
 
 /**
