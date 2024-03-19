@@ -17,6 +17,12 @@ import com.topic2.android.notes.util.fromHex
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.text.font.FontWeight
+import com.topic2.android.notes.viewmodel.MainViewModel
+
+@Composable
+fun SaveNoteScreen(viewModel: MainViewModel){
+
+}
 
 @Composable
 fun ColorItem(
