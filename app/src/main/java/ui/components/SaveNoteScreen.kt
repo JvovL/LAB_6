@@ -20,6 +20,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.BottomDrawer
+import androidx.compose.material.BottomDrawerState
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -34,40 +38,65 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
 import com.topic2.android.notes.R
 import com.topic2.android.notes.domain.model.NEW_NOTE_ID
 import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
+@ExperimentalMaterialApi
 fun SaveNoteScreen(viewModel: MainViewModel) {
     val noteEntry: NoteModel by viewModel.noteEntry.observeAsState(NoteModel())
 
+    val colors: List<ColorModel> by viewModel.colors
+        .observeAsState(listOf())
+
+    val bottomDrawerState: BottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(topBar = {
-        val isEditingMode:Boolean = noteEntry.id != NEW_NOTE_ID
+        val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
         SaveNoteTopAppBar(
             isEditingMode = isEditingMode,
             onBackClick = { NotesRouter.navigateTo(Screen.Notes) },
-            onSaveNoteClick = {viewModel.saveNote(noteEntry) },
-            onOpenColorPickerClick = { },
-            onDeleteNoteClick = {viewModel.moveNoteToTrash(noteEntry) }
+            onSaveNoteClick = { viewModel.saveNote(noteEntry) },
+            onOpenColorPickerClick = { coroutineScope.launch { bottomDrawerState.open() } },
+            onDeleteNoteClick = { viewModel.moveNoteToTrash(noteEntry) }
         )
     },
         content = {
-            SaveNoteContent(
-                note = noteEntry,
-                onNoteChange = {updateNoteEntry ->
-                    viewModel.onNoteEntryChange(updateNoteEntry)
+            BottomDrawer(
+                drawerState = bottomDrawerState,
+                drawerContent = {
+                    ColorPicker(colors = colors,
+                        onColorSelect = { color ->
+                            val newNoteEntry = noteEntry.copy(color = color)
+                            viewModel.onNoteEntryChange(newNoteEntry)
+                        }
+                    )
+                },
+                content = {
+                    SaveNoteContent(
+                        note = noteEntry,
+                        onNoteChange = { updateNoteEntry ->
+                            viewModel.onNoteEntryChange(updateNoteEntry)
+                        }
+                    )
                 }
             )
         }
     )
 }
+
+
 
 @Composable
 private fun SaveNoteTopAppBar(
