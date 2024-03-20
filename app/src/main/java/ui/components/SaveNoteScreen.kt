@@ -17,9 +17,9 @@ import com.topic2.android.notes.domain.model.ColorModel
 import com.topic2.android.notes.util.fromHex
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.BottomDrawer
 import androidx.compose.material.BottomDrawerState
 import androidx.compose.material.BottomDrawerValue
@@ -29,6 +29,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.ui.text.font.FontWeight
@@ -39,9 +40,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberBottomDrawerState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import com.topic2.android.notes.R
 import com.topic2.android.notes.domain.model.NEW_NOTE_ID
@@ -62,6 +66,10 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
     val bottomDrawerState: BottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
+    val moveNoteToTrashDialogShownState: MutableState<Boolean> = rememberSaveable {
+        mutableStateOf(false)
+    }
+
     Scaffold(topBar = {
         val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
         SaveNoteTopAppBar(
@@ -69,7 +77,7 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
             onBackClick = { NotesRouter.navigateTo(Screen.Notes) },
             onSaveNoteClick = { viewModel.saveNote(noteEntry) },
             onOpenColorPickerClick = { coroutineScope.launch { bottomDrawerState.open() } },
-            onDeleteNoteClick = { viewModel.moveNoteToTrash(noteEntry) }
+            onDeleteNoteClick = { moveNoteToTrashDialogShownState.value = true }
         )
     },
         content = {
@@ -92,6 +100,28 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                     )
                 }
             )
+                if (moveNoteToTrashDialogShownState.value) {
+                    AlertDialog(
+                        onDismissRequest = { moveNoteToTrashDialogShownState.value = false},
+                        title = { Text("Move note to the trash?")},
+                        text = {Text("Are you sure you want to " +
+                        "move this note to the trash?")},
+                        confirmButton = {
+                            TextButton(onClick = {
+                                viewModel.moveNoteToTrash(noteEntry)
+                            }) {
+                                Text("Confirm")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                moveNoteToTrashDialogShownState.value = false
+                            }) {
+                                Text("Dismiss")
+                            }
+                        }
+                    )
+                }
         }
     )
 }
